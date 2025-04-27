@@ -29,7 +29,7 @@ def init_db():
 class NotesApp(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Simple Notes App")
+        self.title("TODO")
         self.geometry("400x300")
         self.resizable(False, False)
 
@@ -39,10 +39,10 @@ class NotesApp(tk.Tk):
         frame = tk.Frame(self)
         frame.pack(pady=(0,10))
 
-        add_btn = tk.Button(frame, text="Add Note", command=self.add_note)
+        add_btn = tk.Button(frame, text="+", command=self.add_note)
         add_btn.pack(side=tk.LEFT, padx=5)
 
-        del_btn = tk.Button(frame, text="Delete Selected", command=self.delete_note)
+        del_btn = tk.Button(frame, text="-", command=self.delete_note)
         del_btn.pack(side=tk.LEFT, padx=5)
 
         self.load_notes()
@@ -58,7 +58,7 @@ class NotesApp(tk.Tk):
         conn.close()
 
     def add_note(self):
-        note = simpledialog.askstring("New Note", "Enter your note:")
+        note = simpledialog.askstring("Add", "TODO:")
         if note:
             conn = self.db_connection()
             conn.execute("INSERT INTO notes (text) VALUES (?)", (note,))
@@ -66,12 +66,12 @@ class NotesApp(tk.Tk):
             conn.close()
             self.load_notes()
         else:
-            messagebox.showinfo("Cancelled", "No note added.")
+            messagebox.showinfo("Cancelled", "None added.")
 
     def delete_note(self):
         sel = self.listbox.curselection()
         if not sel:
-            messagebox.showwarning("Select a note", "Please select a note to delete.")
+            messagebox.showwarning("Select a TODO", "Please select a TODO to delete it.")
             return
         idx_text = self.listbox.get(sel[0]).split(":", 1)[0]
         conn = self.db_connection()
